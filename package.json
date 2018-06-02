@@ -1,6 +1,6 @@
 {
   "name": "dynamic-import-ponyfill",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": "lukeed/dynamic-import-ponyfill",
   "description": "A tiny (141B) simple ponyfill for dynamic imports",
   "umd:main": "dist/import.min.js",
