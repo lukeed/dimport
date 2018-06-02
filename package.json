@@ -1,8 +1,8 @@
 {
-  "name": "dynamic-import-polyfill",
+  "name": "dynamic-import-ponyfill",
   "version": "0.0.0",
-  "repository": "lukeed/dynamic-import-polyfill",
   "description": "WIP",
+  "repository": "lukeed/dynamic-import-ponyfill",
   "umd:main": "dist/import.min.js",
   "module": "dist/import.es.js",
   "main": "dist/import.js",
