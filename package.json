@@ -1,0 +1,29 @@
+{
+  "name": "dynamic-import-polyfill",
+  "version": "0.0.0",
+  "repository": "lukeed/dynamic-import-polyfill",
+  "description": "WIP",
+  "umd:main": "dist/import.min.js",
+  "module": "dist/import.es.js",
+  "main": "dist/import.js",
+  "license": "MIT",
+  "author": {
+    "name": "Luke Edwards",
+    "email": "luke.edwards05@gmail.com",
+    "url": "lukeed.com"
+  },
+  "scripts": {
+    "build": "microbundle src --name import",
+    "pretest": "npm run build",
+    "test": "tape test/*.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+  ],
+  "devDependencies": {
+    "microbundle": "^0.4.3",
+    "tape": "^4.8.0"
+  }
+}
