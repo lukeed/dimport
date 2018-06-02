@@ -5,7 +5,8 @@ const lib = require('..');
 function foo(txt) {
 	let m = { exports:{} };
 	new Function('module', 'exports', txt)(m, m.exports);
-	return m.exports;
+	m.default = m.exports.default || m.exports;
+	return m;
 }
 
 test('exports', t => {
