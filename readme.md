@@ -1,6 +1,6 @@
 # dynamic-import-ponyfill [![Build Status](https://travis-ci.org/lukeed/dynamic-import-ponyfill.svg?branch=master)](https://travis-ci.org/lukeed/dynamic-import-ponyfill)
 
-> A tiny (158B) [ponyfill](https://github.com/sindresorhus/ponyfill#how-are-ponyfills-better-than-polyfills) for dynamic imports &mdash; `import()`
+> A tiny (141B) [ponyfill](https://github.com/sindresorhus/ponyfill#how-are-ponyfills-better-than-polyfills) for dynamic imports &mdash; `import()`
 
 ---
 
@@ -90,7 +90,7 @@ Returns: `Promise`
 
 Returns a Promise containing the the CommonJS module contents.
 
-> **Note:** The Promise-requestor is cached for instant reuse.
+<!-- > **Note:** The Promise-requestor is cached for instant reuse. -->
 
 #### url
 Type: `String`

@@ -2,7 +2,7 @@
   "name": "dynamic-import-ponyfill",
   "version": "0.0.0",
   "repository": "lukeed/dynamic-import-ponyfill",
-  "description": "A tiny (158B) simple ponyfill for dynamic imports",
+  "description": "A tiny (141B) simple ponyfill for dynamic imports",
   "umd:main": "dist/import.min.js",
   "module": "dist/import.es.js",
   "main": "dist/import.js",
