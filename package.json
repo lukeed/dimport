@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "repository": "lukeed/dynamic-import-ponyfill",
   "description": "A tiny (141B) simple ponyfill for dynamic imports",
-  "umd:main": "dist/import.min.js",
-  "module": "dist/import.es.js",
-  "main": "dist/import.js",
+  "umd:main": "dist/index.min.js",
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
   "license": "MIT",
   "author": {
     "name": "Luke Edwards",
@@ -14,20 +14,13 @@
   },
   "scripts": {
     "pretest": "npm run build",
+    "build": "npm run -s build:nomodule && npm run -s build:module",
     "build:module": "microbundle src/index.js --name dimport --no-sourcemap",
-    "build:nomodule": "microbundle src/nomodule.js --o nomodule --name dimport --no-sourcemap",
-    "build": "npm run -s build:module && npm run -s build:nomodule",
+    "build:nomodule": "microbundle src/nomodule.js --name dimport --no-sourcemap && mv dist nomodule",
     "test": "tape test/*.js | tap-spec"
   },
   "files": [
     "dist"
-  ],
-  "keywords": [
-    "browser",
-    "dynamic",
-    "dynamic-import",
-    "imports",
-    "import"
   ],
   "dependencies": {
     "rewrite-imports": "^2.0.3"
@@ -36,5 +29,12 @@
     "microbundle": "^0.4.3",
     "tap-spec": "^4.1.2",
     "tape": "^4.8.0"
-  }
+  },
+  "keywords": [
+    "browser",
+    "dynamic",
+    "dynamic-import",
+    "imports",
+    "import"
+  ]
 }
