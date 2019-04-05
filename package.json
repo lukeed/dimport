@@ -14,6 +14,7 @@
   },
   "scripts": {
     "pretest": "npm run build",
+    "prebuild": "rm -rf nomodule dist",
     "build": "npm run -s build:nomodule && npm run -s build:module",
     "build:module": "microbundle src/index.js --name dimport --no-sourcemap",
     "build:nomodule": "microbundle src/nomodule.js --name dimport --no-sourcemap && mv dist nomodule",
