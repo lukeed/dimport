@@ -1,8 +1,9 @@
 {
   "name": "dimport",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "lukeed/dimport",
   "description": "WIP",
+  "unpkg": "dist/index.min.js",
   "umd:main": "dist/index.min.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -15,6 +16,7 @@
   "scripts": {
     "pretest": "npm run build",
     "prebuild": "rm -rf nomodule dist",
+    "postbuild": "mv nomodule/index.min.js nomodule/index.js",
     "build": "npm run -s build:nomodule && npm run -s build:module",
     "build:module": "microbundle src/index.js --name dimport --no-sourcemap",
     "build:nomodule": "microbundle src/nomodule.js --name dimport --no-sourcemap && mv dist nomodule",
