@@ -20,7 +20,8 @@
     "test": "tape test/*.js | tap-spec"
   },
   "files": [
-    "dist"
+    "dist",
+    "nomodule"
   ],
   "dependencies": {
     "rewrite-imports": "^2.0.3"
