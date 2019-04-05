@@ -1,6 +1,6 @@
-# dynamic-import-ponyfill [![Build Status](https://travis-ci.org/lukeed/dynamic-import-ponyfill.svg?branch=master)](https://travis-ci.org/lukeed/dynamic-import-ponyfill)
+# dimport [![Build Status](https://badgen.now.sh/travis/lukeed/dimport)](https://travis-ci.org/lukeed/dimport)
 
-> A tiny (141B) [ponyfill](https://github.com/sindresorhus/ponyfill#how-are-ponyfills-better-than-polyfills) for dynamic imports &mdash; `import()`
+> WIP
 
 ---
 
@@ -30,7 +30,7 @@ function supported() {
 ## Install
 
 ```
-$ npm install --save dynamic-import-ponyfill
+$ npm install --save dimport
 ```
 
 Then with a module bundler like [rollup](https://rollupjs.org/) or [webpack](https://webpack.js.org/), use as you would anything else:

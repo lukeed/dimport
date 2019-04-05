@@ -1,8 +1,8 @@
 {
-  "name": "dynamic-import-ponyfill",
+  "name": "dimport",
   "version": "0.1.0",
-  "repository": "lukeed/dynamic-import-ponyfill",
-  "description": "A tiny (141B) simple ponyfill for dynamic imports",
+  "repository": "lukeed/dimport",
+  "description": "WIP",
   "umd:main": "dist/index.min.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -33,10 +33,11 @@
     "tape": "^4.8.0"
   },
   "keywords": [
-    "browser",
+    "esm",
     "dynamic",
     "dynamic-import",
     "imports",
-    "import"
+    "import",
+    "module"
   ]
 }
