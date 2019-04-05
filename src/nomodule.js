@@ -2,7 +2,7 @@ import imports from 'rewrite-imports';
 
 var CACHE = {};
 
-function rewrite(str, url, fn) {
+function rewrite(str, url) {
 	var key, keys=[], urls=[], idx=0;
 
 	var txt = imports(
@@ -14,8 +14,7 @@ function rewrite(str, url, fn) {
 			})
 
 			// Attach ourself for dynamic imports
-			// .replace(/(^|\s|;)(import)\((.*)\)/g, `$1${fn}($3)`)  //<- also works
-			.replace(/(^|\s|;)(import)(?=\()/g, '$1' + fn)
+			.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
 
 			// Exports
 			.replace(/export default/, 'module.exports =')
@@ -34,7 +33,7 @@ function rewrite(str, url, fn) {
 		txt += '\nexports.' + key + ' = ' + key + ';';
 	}
 
-	return urls.length ? `return Promise.all([${urls.join()}].map(${fn})).then(function($dimport){${txt}});` : txt;
+	return urls.length ? `return Promise.all([${urls.join()}].map(window.dimport)).then(function($dimport){${txt}});` : txt;
 }
 
 function dimport(url) {
@@ -44,7 +43,7 @@ function dimport(url) {
 		mod = { exports:{} };
 		window.dimport = dimport;
 		return Promise.resolve(
-			new Function('module', 'exports', rewrite(txt, url, 'window.dimport'))(mod, mod.exports)
+			new Function('module', 'exports', rewrite(txt, url))(mod, mod.exports)
 		).then(() => {
 			mod.exports.default = mod.exports.default || mod.exports;
 			return CACHE[url] = mod.exports;
