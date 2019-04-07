@@ -36,22 +36,28 @@ function rewrite(str, url) {
 	return urls.length ? `return Promise.all([${urls.join()}].map(window.dimport)).then(function($dimport){${txt}});` : txt;
 }
 
+function exec(url, txt, mod) {
+	mod = { exports: {} };
+	window.dimport = dimport;
+	return Promise.resolve(
+		new Function('module', 'exports', rewrite(txt, url))(mod, mod.exports)
+	).then(() => {
+		mod.exports.default = mod.exports.default || mod.exports;
+		return mod.exports;
+	});
+}
+
 export default function dimport(url) {
 	try {
 		return new Function(`return import('${url}')`).call();
 	} catch (err) {
 		url = new URL(url, location.href).href;
-		if (CACHE[url]) return Promise.resolve(CACHE[url]);
 
-		return fetch(url).then(r => r.text()).then((txt, mod) => {
-			mod = { exports:{} };
-			window.dimport = dimport;
-			return Promise.resolve(
-				new Function('module', 'exports', rewrite(txt, url))(mod, mod.exports)
-			).then(() => {
-				mod.exports.default = mod.exports.default || mod.exports;
-				return CACHE[url] = mod.exports;
-			});
-		});
+		return CACHE[url]
+			? Promise.resolve(CACHE[url])
+			: fetch(url)
+				.then(r => r.text())
+				.then(exec.bind(exec, url))
+				.then(x => (CACHE[url] = x));
 	}
 }
