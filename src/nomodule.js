@@ -2,7 +2,7 @@ import imports from 'rewrite-imports';
 
 var CACHE = {};
 
-function exec(url, str) {
+function run(url, str) {
 	window.dimport = dimport;
 
 	var key, keys=[], urls=[], idx=0;
@@ -58,7 +58,7 @@ export default function dimport(url) {
 			? Promise.resolve(CACHE[url])
 			: fetch(url)
 				.then(r => r.text())
-				.then(exec.bind(exec, url))
+				.then(run.bind(run, url))
 				.then(x => (CACHE[url] = x));
 	}
 }
