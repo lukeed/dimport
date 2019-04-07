@@ -46,6 +46,8 @@ export default function (url) {
 					txt.replace(/(^|\s|;)(import\s*\(|import\s*.*\s*from\s*)['"]([^'"]+)['"]/gi, (_, pre, req, loc) => {
 						return pre + (/\s+from\s*/.test(req) ? req : 'window.dimport(') + `'${new URL(loc, url)}'`;
 					})
+					// Ensure we caught all dynamics (multi-line clauses)
+					.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
 				);
 
 				tag.src = toBlob(`import * as m from '${tag.temp}';window.${key}=m;`);
