@@ -62,3 +62,7 @@ export default function dimport(url) {
 				.then(x => (CACHE[url] = x));
 	}
 }
+
+// Runtime hookups
+var tag = document !== void 0 && document.currentScript || document.querySelector('script[data-main]');
+if (tag) tag.text ? run(location.href, tag.text) : (tag=tag.getAttribute('data-main')) && dimport(tag);
