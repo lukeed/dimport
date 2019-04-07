@@ -2,8 +2,11 @@ import imports from 'rewrite-imports';
 
 var CACHE = {};
 
-function rewrite(str, url) {
+function exec(url, str) {
+	window.dimport = dimport;
+
 	var key, keys=[], urls=[], idx=0;
+	var mod = { exports: {} };
 
 	var txt = imports(
 		str
@@ -33,14 +36,12 @@ function rewrite(str, url) {
 		txt += '\nexports.' + key + ' = ' + key + ';';
 	}
 
-	return urls.length ? `return Promise.all([${urls.join()}].map(window.dimport)).then(function($dimport){${txt}});` : txt;
-}
-
-function exec(url, txt, mod) {
-	mod = { exports: {} };
-	window.dimport = dimport;
 	return Promise.resolve(
-		new Function('module', 'exports', rewrite(txt, url))(mod, mod.exports)
+		new Function('module', 'exports',
+			urls.length
+				? `return Promise.all([${urls.join()}].map(window.dimport)).then(function($dimport){${txt}});`
+				: txt
+		)(mod, mod.exports)
 	).then(() => {
 		mod.exports.default = mod.exports.default || mod.exports;
 		return mod.exports;
