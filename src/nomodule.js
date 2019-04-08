@@ -16,7 +16,7 @@ function run(url, str) {
 			// Ensure full URLs & Gather static imports
 			str.replace(/(import\s*.*\s*from\s*)['"]([^'"]+)['"];?/gi, function (_, state, loc) {
 				loc = "'" + new URL(loc, url).href + "'";
-				return state + (/\s*from\s*/.test(state) ? "'$dimport[" + urls.push(loc) - 1 + "]';" : loc + ";");
+				return state + (/\s*from\s*/.test(state) ? "'$dimport[" + (urls.push(loc) - 1) + "]';" : loc + ";");
 			})
 
 			// Attach ourself for dynamic imports
@@ -31,7 +31,7 @@ function run(url, str) {
 				var tmp, out='', arr=list.split(',');
 				while (tmp = arr.shift()) {
 					tmp = tmp.trim().split(' as ');
-					out += 'exports.' + tmp[1] || tmp[0] + ' = ' + tmp[0] + ';\n';
+					out += 'exports.' + (tmp[1] || tmp[0]) + ' = ' + tmp[0] + ';\n';
 				}
 				return out;
 			})
