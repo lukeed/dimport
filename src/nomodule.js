@@ -8,11 +8,10 @@ function run(url, str) {
 	var key, keys=[], urls=[], mod={ exports:{} };
 
 	var txt = imports(
-		str
 			// Ensure full URLs & Gather static imports
-			.replace(/(import\s*.*\s*from\s*)['"]([^'"]+)['"];?/gi, (_, state, loc) => {
+			str.replace(/(import\s*.*\s*from\s*)['"]([^'"]+)['"];?/gi, function (_, state, loc) {
 				loc = "'" + new URL(loc, url).href + "'";
-				return state + (/\s*from\s*/.test(state) ? `'$dimport[${urls.push(loc) - 1}]';` : `${loc};`);
+				return state + (/\s*from\s*/.test(state) ? "'$dimport[" + urls.push(loc) - 1 + "]';" : loc + ";");
 			})
 
 			// Attach ourself for dynamic imports
@@ -20,12 +19,14 @@ function run(url, str) {
 
 			// Exports
 			.replace(/export default/, 'module.exports =')
-			.replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|\=))/gi, (_, type, name) => keys.push(name) && (type + ' ' + name))
-			.replace(/export\s*\{([\s\S]*?)\}/gi, (_, list) => {
+			.replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|\=))/gi, function (_, type, name) {
+				return keys.push(name) && (type + ' ' + name);
+			})
+			.replace(/export\s*\{([\s\S]*?)\}/gi, function (_, list) {
 				var tmp, out='', arr=list.split(',');
 				while (tmp = arr.shift()) {
 					tmp = tmp.trim().split(' as ');
-					out += `exports.${tmp[1] || tmp[0]} = ${tmp[0]};\n`;
+					out += 'exports.' + tmp[1] || tmp[0] + ' = ' + tmp[0] + ';\n';
 				}
 				return out;
 			})
@@ -38,10 +39,10 @@ function run(url, str) {
 	return Promise.resolve(
 		new Function('module', 'exports',
 			urls.length
-				? `return Promise.all([${urls.join()}].map(window.dimport)).then(function($dimport){${txt}});`
+				? 'return Promise.all([' + urls.join() + '].map(window.dimport)).then(function($dimport){' + txt + '});'
 				: txt
 		)(mod, mod.exports)
-	).then(() => {
+	).then(function () {
 		mod.exports.default = mod.exports.default || mod.exports;
 		return mod.exports;
 	});
@@ -49,16 +50,19 @@ function run(url, str) {
 
 export default function dimport(url) {
 	try {
-		return new Function(`return import('${url}')`).call();
+		return new Function("return import('" + url + "')").call();
 	} catch (err) {
 		url = new URL(url, location.href).href;
 
 		return CACHE[url]
 			? Promise.resolve(CACHE[url])
-			: fetch(url)
-				.then(r => r.text())
+			: fetch(url).then(function (r) {
+					return r.text();
+				})
 				.then(run.bind(run, url))
-				.then(x => (CACHE[url] = x));
+				.then(function (x) {
+					return CACHE[url] = x;
+				});
 	}
 }
 

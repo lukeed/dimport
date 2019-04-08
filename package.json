@@ -15,11 +15,7 @@
   },
   "scripts": {
     "pretest": "npm run build",
-    "prebuild": "rm -rf nomodule dist",
-    "postbuild": "mv nomodule/index.min.js nomodule/index.js",
-    "build": "npm run -s build:nomodule && npm run -s build:module",
-    "build:module": "microbundle src/index.js --name dimport --no-sourcemap",
-    "build:nomodule": "microbundle src/nomodule.js --name dimport --no-sourcemap && mv dist nomodule",
+    "build": "rm -rf nomodule dist && node bin",
     "test": "tape test/*.js | tap-spec"
   },
   "files": [
@@ -30,7 +26,7 @@
     "rewrite-imports": "^2.0.3"
   },
   "devDependencies": {
-    "microbundle": "^0.4.3",
+    "bundt": "^0.3.1",
     "tap-spec": "^4.1.2",
     "tape": "^4.8.0"
   },

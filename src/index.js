@@ -16,45 +16,48 @@ function toBlob(txt) {
 
 var CACHE = {};
 
-export default function (url) {
+export default function dimport(url) {
 	try {
-		return new Function(`return import('${url}')`).call();
+		return new Function("return import('" + url + "')").call();
 	} catch (tag) {
 		url = new URL(url, location.href).href;
 		if (CACHE[url]) return Promise.resolve(CACHE[url]);
 
-		return fetch(url).then(r => r.text()).then(txt => {
-			window.dimport = dimport;
+		return fetch(url)
+			.then(function (r) {
+				return r.text();
+			})
+			.then(function (txt) {
+				window.dimport = dimport;
+				return new Promise(function (res, rej, key) {
+					tag = document.createElement('script');
+					key = '$' + Math.random().toString(32).slice(2);
+					tag.type = 'module';
 
-			return new Promise((res, rej, key) => {
-				tag = document.createElement('script');
-				key = '$' + Math.random().toString(32).slice(2);
-				tag.type = 'module';
+					tag.onerror = function () {
+						reset(key, tag);
+						rej(new TypeError('Failed to fetch dynamically imported module: ' + url));
+					};
 
-				tag.onerror = () => {
-					reset(key, tag);
-					rej(new TypeError(`Failed to fetch dynamically imported module: ${url}`));
-				};
+					tag.onload = function () {
+						res(CACHE[url] = window[key]);
+						reset(key, tag);
+					};
 
-				tag.onload = () => {
-					res(CACHE[url] = window[key]);
-					reset(key, tag);
-				};
+					tag.temp = toBlob(
+						// Ensure full URLs & rewrite dynamic imports
+						txt.replace(/(^|\s|;)(import\s*\(|import\s*.*\s*from\s*)['"]([^'"]+)['"]/gi, function (_, pre, req, loc) {
+							return pre + (/\s+from\s*/.test(req) ? req : 'window.dimport(') + "'" + new URL(loc, url) + "'";
+						})
+						// Ensure we caught all dynamics (multi-line clauses)
+						.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
+					);
 
-				tag.temp = toBlob(
-					// Ensure full URLs & rewrite dynamic imports
-					txt.replace(/(^|\s|;)(import\s*\(|import\s*.*\s*from\s*)['"]([^'"]+)['"]/gi, (_, pre, req, loc) => {
-						return pre + (/\s+from\s*/.test(req) ? req : 'window.dimport(') + `'${new URL(loc, url)}'`;
-					})
-					// Ensure we caught all dynamics (multi-line clauses)
-					.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
-				);
+					tag.src = toBlob("import * as m from '" + tag.temp + "';window." + key + "=m;");
 
-				tag.src = toBlob(`import * as m from '${tag.temp}';window.${key}=m;`);
-
-				document.head.appendChild(tag);
+					document.head.appendChild(tag);
+				});
 			});
-		});
 	}
 }
 
