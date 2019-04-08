@@ -5,8 +5,7 @@ var CACHE = {};
 function run(url, str) {
 	window.dimport = dimport;
 
-	var key, keys=[], urls=[], idx=0;
-	var mod = { exports: {} };
+	var key, keys=[], urls=[], mod={ exports:{} };
 
 	var txt = imports(
 		str
