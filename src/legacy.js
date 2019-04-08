@@ -54,7 +54,7 @@ function run(url, str) {
 	});
 }
 
-export default function dimport(url) {
+function dimport(url) {
 	try {
 		return new Function("return import('" + url + "')").call();
 	} catch (tag) {
@@ -79,3 +79,5 @@ export default function dimport(url) {
 // Runtime hookups
 var tag = document !== void 0 && document.querySelector('script[data-main]');
 if (tag) tag.text ? run(location.href, tag.text) : (tag=tag.getAttribute('data-main')) && dimport(tag);
+
+export default dimport;
