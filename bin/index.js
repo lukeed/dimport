@@ -10,31 +10,39 @@ const write = promisify(writeFile);
 const bundt = require.resolve('bundt');
 const rewrite = require.resolve('rewrite-imports');
 
-(async function () {
-	// Modify dependency for inline usage
-	const dep = await read(rewrite, 'utf8').then(x => x.replace('module.exports = function ', 'function imports'));
+async function toMode(name, func) {
+	if (func) {
+		let data = await read(`src/${name}.js`, 'utf8').then(func);
+		await write('temp.js', data);
+	}
 
-	// Now inline the "nomodule" dependency
-	const temp = await read('src/nomodule.js', 'utf8').then(x => x.replace(`import imports from 'rewrite-imports';`, dep));
-
-	// Write this to temporary file
-	await write('temp.js', temp);
-
-	// Build "nomodule" first
-	let pid = await run(bundt, ['temp.js', '--unpkg', '--module']);
-	if (pid.stderr) return process.stderr.write(pid.stderr);
+	console.log(`Building "${name}" files`);
+	let pid = await run(bundt, func ? ['temp.js', '--unpkg', '--module'] : ['src/module.js']);
 	process.stdout.write(pid.stdout);
+
+	if (pid.stderr) {
+		process.stderr.write(pid.stderr);
+		return process.exit(1);
+	}
 
 	// UMD should be "default" for unpkg access
 	// ~> needs "index.js" since no "unpkg" key config
-	await run('mv', ['dist/index.min.js', 'dist/index.js']);
-	await run('mv', ['dist', 'nomodule']);
-	await run('rm', ['temp.js']);
+	if (func) {
+		await run('mv', ['dist/index.min.js', 'dist/index.js']);
+		await run('mv', ['dist', name]);
+		await run('rm', ['temp.js']);
+	}
+}
 
-	// Now build "module" file
-	let { stderr, stdout } = await run(bundt, ['src/module.js']);
-	if (stderr) return process.stderr.write(stderr);
-	process.stdout.write(stdout);
+(async function () {
+	// Modify dependency for inline usage
+	const dep = await read(rewrite, 'utf8').then(x => x.replace('module.exports = function ', 'function imports'));
+	const inject = x => x.replace(`import imports from 'rewrite-imports';`, dep);
+
+	// Build modes (order matters)
+	await toMode('nomodule', inject);
+	await toMode('legacy', inject);
+	await toMode('module');
 })().catch(err => {
 	console.error('Caught: ', err);
 	process.exit(1);

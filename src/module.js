@@ -1,3 +1,9 @@
+// Mode :: "module"
+// Meant for the (few) browsers that
+// do support <script type=module /> and
+// do support static `import` statements,
+// but do not support dynamic imports.
+
 function reset(key, tag) {
 	tag.onerror = tag.onload = null;
 	URL.revokeObjectURL(tag.temp);

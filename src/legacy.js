@@ -1,7 +1,8 @@
-// Mode :: "nomodule"
-// Meant for browsers that
-// do not support <script type=module /> and
-// do not support any static `import` statements.
+// Mode :: "legacy"
+// Much like "nomodule" but opens door to
+// legacy/deprecated browsers that also
+// do not support `new URL` and `fetch()`.
+// NOTE: Requires `Promise` polyfill.
 
 import imports from 'rewrite-imports';
 
@@ -56,21 +57,25 @@ function run(url, str) {
 export default function dimport(url) {
 	try {
 		return new Function("return import('" + url + "')").call();
-	} catch (err) {
-		url = new URL(url, location.href).href;
+	} catch (tag) {
+		(tag = document.createElement('a')).href = url;
+		url = tag.href;
 
 		return CACHE[url]
 			? Promise.resolve(CACHE[url])
-			: fetch(url).then(function (r) {
-					return r.text();
-				})
-				.then(run.bind(run, url))
-				.then(function (x) {
-					return CACHE[url] = x;
-				});
+			: new Promise(function (res, rej, xhr) {
+				(xhr = new XMLHttpRequest).onerror = rej;
+				xhr.open('GET', url, true);
+				xhr.onload = function () {
+					(xhr.status >= 400)
+						? rej(new TypeError('Failed to fetch dynamically imported module: ' + url))
+						: run(url, xhr.responseText).then(function (x) { return res(CACHE[url] = x) });
+				};
+				xhr.send();
+			});
 	}
 }
 
 // Runtime hookups
-var tag = document !== void 0 && document.currentScript || document.querySelector('script[data-main]');
+var tag = document !== void 0 && document.querySelector('script[data-main]');
 if (tag) tag.text ? run(location.href, tag.text) : (tag=tag.getAttribute('data-main')) && dimport(tag);
