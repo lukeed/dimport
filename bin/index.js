@@ -26,12 +26,13 @@ const rewrite = require.resolve('rewrite-imports');
 	process.stdout.write(pid.stdout);
 
 	// UMD should be "default" for unpkg access
+	// ~> needs "index.js" since no "unpkg" key config
 	await run('mv', ['dist/index.min.js', 'dist/index.js']);
 	await run('mv', ['dist', 'nomodule']);
 	await run('rm', ['temp.js']);
 
 	// Now build "module" file
-	let { stderr, stdout } = await run(bundt);
+	let { stderr, stdout } = await run(bundt, ['src/module.js']);
 	if (stderr) return process.stderr.write(stderr);
 	process.stdout.write(stdout);
 })().catch(err => {
