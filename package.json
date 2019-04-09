@@ -27,9 +27,9 @@
     "rewrite-imports": "^2.0.3"
   },
   "devDependencies": {
-    "bundt": "^0.3.1",
     "tap-spec": "^4.1.2",
     "tape": "^4.8.0"
+    "bundt": "^0.4.0",
   },
   "keywords": [
     "esm",

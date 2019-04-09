@@ -17,7 +17,11 @@ async function toMode(name, func) {
 	}
 
 	console.log(`Building "${name}" files`);
-	let pid = await run(bundt, func ? ['temp.js', '--unpkg', '--module'] : ['src/module.js']);
+	let pid = await run(bundt,
+		func
+			? ['temp.js', '--unpkg', '--module', '--minify']
+			: ['src/module.js', '--minify']
+	);
 	process.stdout.write(pid.stdout);
 
 	if (pid.stderr) {
