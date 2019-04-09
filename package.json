@@ -1,6 +1,6 @@
 {
   "name": "dimport",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": "lukeed/dimport",
   "description": "WIP",
   "unpkg": "dist/index.min.js",
@@ -14,9 +14,8 @@
     "url": "lukeed.com"
   },
   "scripts": {
-    "pretest": "npm run build",
     "build": "rm -rf nomodule legacy dist && node bin",
-    "test": "tape test/*.js | tap-spec"
+    "test": "eslint src bin"
   },
   "files": [
     "dist",
@@ -27,9 +26,8 @@
     "rewrite-imports": "^2.0.3"
   },
   "devDependencies": {
-    "tap-spec": "^4.1.2",
-    "tape": "^4.8.0"
     "bundt": "^0.4.0",
+    "eslint": "^5.16.0"
   },
   "keywords": [
     "esm",

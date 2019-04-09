@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+/* eslint-disable no-console */
 const { promisify } = require('util');
 const { execFile } = require('child_process');
 const { readFile, writeFile } = require('fs');

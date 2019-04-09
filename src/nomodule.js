@@ -24,7 +24,7 @@ function run(url, str) {
 
 			// Exports
 			.replace(/export default/, 'module.exports =')
-			.replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|\=))/gi, function (_, type, name) {
+			.replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|=))/gi, function (_, type, name) {
 				return keys.push(name) && (type + ' ' + name);
 			})
 			.replace(/export\s*\{([\s\S]*?)\}/gi, function (_, list) {
