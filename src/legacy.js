@@ -8,6 +8,15 @@ import imports from 'rewrite-imports';
 
 var CACHE = {};
 
+function toURL(url, base, tag, segs) {
+	if (/^https?:\/\//.test(url)) return url;
+	(tag = document.createElement('a')).href = base;
+	if (url[0] == '/' || tag.pathname === '/') return tag.origin + '/' + url;
+	segs = tag.pathname.split('/');
+	base = url.split('../');
+	return tag.origin + segs.slice(0, segs.length - Math.max(base.length - 1, 1)).concat(base.pop()).join('/');
+}
+
 function run(url, str) {
 	window.dimport = dimport;
 
@@ -16,7 +25,7 @@ function run(url, str) {
 	var txt = imports(
 			// Ensure full URLs & Gather static imports
 			str.replace(/(import\s*.*\s*from\s*)['"]([^'"]+)['"];?/gi, function (_, state, loc) {
-				loc = "'" + new URL(loc, url).href + "'";
+				loc = "'" + toURL(loc, url) + "'";
 				return state + (/\s*from\s*/.test(state) ? "'$dimport[" + (urls.push(loc) - 1) + "]';" : loc + ";");
 			})
 
@@ -54,9 +63,8 @@ function run(url, str) {
 	});
 }
 
-function dimport(url, tag) {
-	(tag = document.createElement('a')).href = url;
-	url = tag.href;
+function dimport(url) {
+	url = toURL(url, location.href);
 
 	try {
 		return new Function("return import('" + url + "')").call();
