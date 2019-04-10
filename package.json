@@ -1,6 +1,6 @@
 {
   "name": "dimport",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": "lukeed/dimport",
   "description": "WIP",
   "unpkg": "dist/index.min.js",
@@ -26,8 +26,8 @@
     "rewrite-imports": "^2.0.3"
   },
   "devDependencies": {
-    "bundt": "^0.4.0",
-    "eslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "microbundle": "^0.11.0"
   },
   "keywords": [
     "esm",
