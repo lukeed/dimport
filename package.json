@@ -2,7 +2,7 @@
   "name": "dimport",
   "version": "0.1.5",
   "repository": "lukeed/dimport",
-  "description": "WIP",
+  "description": "Run ES Module syntax in any browser – even IE!",
   "unpkg": "dist/index.min.js",
   "umd:main": "dist/index.min.js",
   "module": "dist/index.mjs",
@@ -33,6 +33,7 @@
     "esm",
     "dynamic",
     "dynamic-import",
+    "polyfill",
     "imports",
     "import",
     "module"
