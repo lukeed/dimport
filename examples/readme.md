@@ -17,15 +17,15 @@ The examples below illustrate `dimport`'s flexibilty, as well as how little need
 ## Examples
 
 * **index.html**<br>
-  [View Source](/index.html)<br>
+  [View Source](./index.html)<br>
   _Mounts a `module` and `nomodule` script tag, each pointing to the **same** application file._
 
 * **inline.html**<br>
-  [View Source](/inline.html)<br>
+  [View Source](./inline.html)<br>
   _Illustrates `dimport`'s ability to parse inline script text – an alternative to `data-main` usage._
 
 * **legacy.html**<br>
-  [View Source](/legacy.html)<br>
+  [View Source](./legacy.html)<br>
   _Allows the ESM-driven application to run anywhere, even in Internet Explorer!<sup>*</sup>_
 
 > <sup>*</sup> While true for `dimport`, this example won't run in IE because its use of `let`, arrow functions, and template literals.
