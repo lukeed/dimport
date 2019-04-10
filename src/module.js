@@ -58,7 +58,7 @@ function dimport(url) {
 						};
 
 						tag.temp = toBlob(url, txt);
-						tag.src = toBlob("import * as m from '" + tag.temp + "';window." + key + "=m;");
+						tag.src = toBlob(url, "import * as m from '" + tag.temp + "';window." + key + "=m;");
 
 						document.head.appendChild(tag);
 					});
