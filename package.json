@@ -1,6 +1,6 @@
 {
   "name": "dimport",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "repository": "lukeed/dimport",
   "description": "WIP",
   "unpkg": "dist/index.min.js",

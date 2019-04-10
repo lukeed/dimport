@@ -54,11 +54,11 @@ function run(url, str) {
 }
 
 function dimport(url) {
+	url = new URL(url, location.href).href;
+
 	try {
 		return new Function("return import('" + url + "')").call();
 	} catch (err) {
-		url = new URL(url, location.href).href;
-
 		return CACHE[url]
 			? Promise.resolve(CACHE[url])
 			: fetch(url).then(function (r) {

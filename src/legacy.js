@@ -54,13 +54,13 @@ function run(url, str) {
 	});
 }
 
-function dimport(url) {
+function dimport(url, tag) {
+	(tag = document.createElement('a')).href = url;
+	url = tag.href;
+
 	try {
 		return new Function("return import('" + url + "')").call();
-	} catch (tag) {
-		(tag = document.createElement('a')).href = url;
-		url = tag.href;
-
+	} catch (err) {
 		return CACHE[url]
 			? Promise.resolve(CACHE[url])
 			: new Promise(function (res, rej, xhr) {
