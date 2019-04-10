@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>dimport</title>
+		<meta charset="utf-8"/>
+		<meta name="theme-color" content="#1e88e5"/>
+		<meta name="mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="description" content="Examples for using the `dimport` library"/>
+		<link rel="stylesheet" href="/app.css">
+	</head>
+	<body>
+		<!--
+			Run dimport in "legacy" mode, which does not use:
+			  * `new URL`
+			  * `fetch()`
+			If you supply a `Promise` polyfill, this will work in IE!
+		-->
+		<script>window.Promise||document.write('<script src=https://unpkg.com/zousan><\/script>');</script>
+		<script defer src="https://unpkg.com/dimport/legacy" data-main="/app.js"></script>
+	</body>
+</html>

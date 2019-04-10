@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>dimport</title>
+		<meta charset="utf-8"/>
+		<meta name="theme-color" content="#1e88e5"/>
+		<meta name="mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="description" content="Examples for using the `dimport` library"/>
+		<link rel="stylesheet" href="/app.css">
+	</head>
+	<body>
+		<!--
+			Attach ANY mode as `script-src` but also include an
+			inline script body with `import` & `import()` statements.
+			The inline script runs _after_ `dimport` is loaded.
+
+			Notice: We're fetching the UMD build since not using `type=module`.
+			Notice: We can use `import` despite not being inside `type=module`!
+		-->
+		<script src="https://unpkg.com/dimport">
+			import('/app.js');
+		</script>
+	</body>
+</html>

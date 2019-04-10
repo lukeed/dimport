@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "sirv --dev"
+  },
+  "devDependencies": {
+    "sirv-cli": "^0.2.4"
+  }
+}
