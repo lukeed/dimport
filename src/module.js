@@ -12,9 +12,16 @@ function reset(key, tag) {
 	tag.remove();
 }
 
-function toBlob(txt) {
+function toBlob(url, txt) {
 	return URL.createObjectURL(
-		new Blob([txt], {
+		new Blob([
+			// Ensure full URLs & rewrite dynamic imports
+			txt.replace(/(^|\s|;)(import\s*\(|import\s*.*\s*from\s*)['"]([^'"]+)['"]/gi, function (_, pre, req, loc) {
+				return pre + (/\s+from\s*/.test(req) ? req : 'window.dimport(') + "'" + new URL(loc, url) + "'";
+			})
+			// Ensure we caught all dynamics (multi-line clauses)
+			.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
+		], {
 			type: 'application/javascript'
 		})
 	);
@@ -50,15 +57,7 @@ function dimport(url) {
 							reset(key, tag);
 						};
 
-						tag.temp = toBlob(
-							// Ensure full URLs & rewrite dynamic imports
-							txt.replace(/(^|\s|;)(import\s*\(|import\s*.*\s*from\s*)['"]([^'"]+)['"]/gi, function (_, pre, req, loc) {
-								return pre + (/\s+from\s*/.test(req) ? req : 'window.dimport(') + "'" + new URL(loc, url) + "'";
-							})
-							// Ensure we caught all dynamics (multi-line clauses)
-							.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
-						);
-
+						tag.temp = toBlob(url, txt);
 						tag.src = toBlob("import * as m from '" + tag.temp + "';window." + key + "=m;");
 
 						document.head.appendChild(tag);
@@ -69,6 +68,6 @@ function dimport(url) {
 
 // Runtime hookups
 var tag = document !== void 0 && document.currentScript || document.querySelector('script[data-main]');
-if (tag) tag.text ? dimport(toBlob(tag.text)) : (tag=tag.getAttribute('data-main')) && dimport(tag);
+if (tag) tag.text ? dimport(toBlob(location.href, tag.text)) : (tag=tag.getAttribute('data-main')) && dimport(tag);
 
 export default dimport;
