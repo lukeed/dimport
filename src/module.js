@@ -16,8 +16,8 @@ function toBlob(url, txt) {
 	return URL.createObjectURL(
 		new Blob([
 			// Ensure full URLs & rewrite dynamic imports
-			txt.replace(/(^|\s|;)(import\s*\(|import\s*.*\s*from\s*)['"]([^'"]+)['"]/gi, function (_, pre, req, loc) {
-				return pre + (/\s+from\s*/.test(req) ? req : 'window.dimport(') + "'" + new URL(loc, url) + "'";
+			txt.replace(/(^|\s|;)(import\s*)(\(|.*from\s*|)['"]([^'"]+)['"]/gi, function (_, pre, req, type, loc) {
+				return pre + (type == '(' ? 'window.dimport' : req) + type + "'" + new URL(loc, url) + "'";
 			})
 			// Ensure we caught all dynamics (multi-line clauses)
 			.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')

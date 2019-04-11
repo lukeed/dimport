@@ -24,12 +24,12 @@ function run(url, str) {
 
 	var txt = imports(
 			// Ensure full URLs & Gather static imports
-			str.replace(/(import\s*.*\s*from\s*)['"]([^'"]+)['"];?/gi, function (_, state, loc) {
-				loc = "'" + toURL(loc, url) + "'";
-				return state + (/\s*from\s*/.test(state) ? "'$dimport[" + (urls.push(loc) - 1) + "]';" : loc + ";");
+			str.replace(/(^|\s|;)(import\s*)(\(|.*from\s*|)['"]([^'"]+)['"];?/gi, function (_, pre, req, type, loc) {
+				loc = "'" + new URL(loc, url).href + "'";
+				return pre + req + type + (type == '(' ? loc : `'$dimport[${urls.push(loc) - 1}]';`);
 			})
 
-			// Attach ourself for dynamic imports
+			// Ensure we caught all dynamics (multi-line clause)
 			.replace(/(^|\s|;)(import)(?=\()/g, '$1window.dimport')
 
 			// Exports
