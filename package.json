@@ -1,6 +1,6 @@
 {
   "name": "dimport",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "repository": "lukeed/dimport",
   "description": "Run ES Module syntax in any browser – even IE!",
   "unpkg": "dist/index.min.js",
