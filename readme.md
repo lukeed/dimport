@@ -40,14 +40,14 @@ Please note that **all modes** check for native `import()` support first and for
 This means that `dimport` won't do anything if it doesn't have to.
 
 #### "module"
-> **Size (gzip):** 680 bytes<br>
+> **Size (gzip):** 675 bytes<br>
 > **Availablility:** [UMD](https://unpkg.com/dimport), [CommonJS](https://unpkg.com/dimport/dist/index.js), [ES Module](https://unpkg.com/dimport?module)<br>
 > **Requires:** `script[type=module]`, `fetch`, `Promise`, `URL`
 
 Since _static_ `import` statements are supported, this mode parses all _dynamic_ `import()`s and creates temporary `script[type=module]` tags pointing to the resource's full, canonical URL. Once the temporary script loads, the originating Promise is resolved, returning the contents.
 
 #### "nomodule"
-> **Size (gzip):** 915 bytes<br>
+> **Size (gzip):** 918 bytes<br>
 > **Availablility:** [UMD](https://unpkg.com/dimport/nomodule), [ES Module](https://unpkg.com/dimport/nomodule/index.mjs)<br>
 > **Requires:** `fetch`, `Promise`, `URL`
 
@@ -56,7 +56,7 @@ All `import`, `export`, and `import()` statements are dynamically rewritten to C
 Any `import` statements are parsed early, ensuring full canonical URLs, and then the whole file is wrapped in a `Promise.all` chain, guaranteeing each `import` its desired module.
 
 #### "legacy"
-> **Size (gzip):** 1135 bytes<br>
+> **Size (gzip):** 1143 bytes<br>
 > **Availablility:** [UMD](https://unpkg.com/dimport/legacy), [ES Module](https://unpkg.com/dimport/legacy/index.mjs)<br>
 > **Requires:** `Promise`, `XMLHttpRequest`
 
@@ -85,8 +85,8 @@ In the sample above, a browser will automatically choose which script `type` to 
 This means the two scripts can live side-by-side without loading your application twice!<br>
 Finally, the _same_ application file (`bundle.js`) can be used, despite the `module`-vs-`nomodule` choice.
 
-You will also notice that the scripts had a `data-main=""` attribute.<br>
-This the path to _your application_ or _your ESM-containing file_ you wish to load universally.
+You will also notice that the scripts have a `data-main=""` attribute.<br>
+This the path to _your application_ or _your ESM-containing file_ you wish to load.
 
 Once `dimport` has loaded, it circles back and see that its `<script/>` caller also wants it to load a file.<br>
 Alternatively, `dimport` can load an inline script from its caller!
