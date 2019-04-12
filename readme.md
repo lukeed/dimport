@@ -78,7 +78,7 @@ The simplest way is to connect a few `<script/>` tags to [unpkg.com](https://unp
 <script type="module" src="https://unpkg.com/dimport?module" data-main="/bundle.js"></script>
 
 <!-- Load the "nomodule" version on older browsers – acts as fallback! -->
-<script type="nomodule" src="https://unpkg.com/dimport/nomodule" data-main="/bundle.js"></script>
+<script nomodule defer src="https://unpkg.com/dimport/nomodule" data-main="/bundle.js"></script>
 ```
 
 In the sample above, a browser will automatically choose which script `type` to parse.<br>

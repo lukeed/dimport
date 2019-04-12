@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		<!-- Attach "nomodule" and "module" modes with the same App entry file! -->
-		<script type="nomodule" src="https://unpkg.com/dimport/nomodule" data-main="/app.js"></script>
 		<script type="module" src="https://unpkg.com/dimport?module" data-main="/app.js"></script>
+		<script nomodule defer src="https://unpkg.com/dimport/nomodule" data-main="/app.js"></script>
 	</body>
 </html>
